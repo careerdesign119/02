@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESG 임팩트 펀딩 라운드</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Entry Modal -->
+  <div id="entryModal" class="modal">
+    <div class="modal-content">
+      <h2>접속 유형 선택</h2>
+
+      <div id="entryStepType">
+        <div class="button-group">
+          <button id="adminBtn" class="modal-btn">관리자</button>
+          <button id="participantBtn" class="modal-btn">참여자</button>
+        </div>
+      </div>
+
+      <div id="entryStepParticipant" style="display:none; margin-top:14px;">
+        <div class="field">
+          <label class="field-label">참여자 선택</label>
+          <select id="entryParticipantSelect" class="field-input">
+            <option value="">불러오는 중...</option>
+          </select>
+        </div>
+        <div class="button-group" style="margin-top:12px;">
+          <button id="entryParticipantEnter" class="modal-btn">입장</button>
+          <button id="entryParticipantBack" class="modal-btn secondary">뒤로</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Password Modal -->
+  <div id="passwordModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h2>관리자 비밀번호 입력</h2>
+      <input type="password" id="passwordInput" placeholder="비밀번호를 입력하세요" />
+      <p id="passwordError" class="error-text"></p>
+      <div class="button-group">
+        <button id="passwordSubmit" class="modal-btn">확인</button>
+        <button id="passwordCancel" class="modal-btn secondary">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="loading-box">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">로딩중...</div>
+      <div class="loading-subtext">잠시만 기다려주세요</div>
+    </div>
+  </div>
+
+  <!-- Admin Page -->
+  <div id="adminPage" class="page" style="display:none;">
+    <div class="container">
+      <div class="topbar">
+        <h1>관리자 페이지</h1>
+        <div class="topbar-right">
+          <span id="lastSyncText" class="muted">마지막 동기화: -</span>
+          <button id="syncBtn" class="ghost-btn">시트에서 다시 불러오기</button>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="teams">팀 목록</button>
+        <button class="tab-btn" data-tab="participants">참여자 목록</button>
+        <button class="tab-btn" data-tab="votes">투표내역</button>
+      </div>
+
+      <!-- Teams -->
+      <div id="teamsTab" class="tab-content active">
+        <div class="section-header">
+          <h2>팀 목록</h2>
+          <button id="addTeamBtn" class="add-btn">+ 행 추가</button>
+        </div>
+        <div class="table-wrapper">
+          <table id="teamsTable" class="data-table">
+            <thead>
+              <tr>
+                <th>팀명</th>
+                <th>해결문제</th>
+                <th>핵심아이디어</th>
+                <th>실행계획요약</th>
+                <th>기대효과KPI</th>
+                <th>투자메시지</th>
+                <th>이미지파일명</th>
+                <th>누적점수</th>
+                <th>투표자수</th>
+                <th>삭제</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Participants -->
+      <div id="participantsTab" class="tab-content">
+        <div class="section-header">
+          <h2>참여자 목록</h2>
+          <button id="addParticipantBtn" class="add-btn">+ 행 추가</button>
+        </div>
+        <div class="table-wrapper">
+          <table id="participantsTable" class="data-table">
+            <thead>
+              <tr>
+                <th>참여자명</th>
+                <th>소속팀</th>
+                <th>사용점수</th>
+                <th>남은점수</th>
+                <th>삭제</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="hint">※ 소속팀이 입력된 참여자는 자기 팀에 투표할 수 없습니다.</div>
+      </div>
+
+      <!-- Votes -->
+      <div id="votesTab" class="tab-content">
+        <div class="section-header">
+          <h2>투표내역</h2>
+          <button id="clearVotesBtn" class="delete-all-btn">투표내역 전체 삭제</button>
+        </div>
+        <div class="table-wrapper">
+          <table id="votesTable" class="data-table">
+            <thead>
+              <tr>
+                <th>일시</th>
+                <th>참여자명</th>
+                <th>소속팀</th>
+                <th>투표팀명</th>
+                <th>점수</th>
+                <th>삭제</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <button id="saveAdminBtn" class="save-btn">저장</button>
+    </div>
+  </div>
+
+  <!-- Participant Page -->
+  <div id="participantPage" class="page" style="display:none;">
+    <div class="container">
+      <h1>최종 피칭 및 선정 운영안: ESG 임팩트 펀딩 라운드</h1>
+
+      <div class="participant-fixed">
+        <div class="participant-fixed-text">
+          <div><b id="fixedParticipantName"></b> 님</div>
+          <div class="muted">소속팀: <span id="fixedParticipantTeam">-</span></div>
+        </div>
+        <button id="participantResetBtn" class="ghost-btn">참여자 다시 선택</button>
+      </div>
+
+      <div class="intro-card">
+        지금부터 진행되는 최종 피칭은 단순한 심사가 아니라, 여러분이 실제로 실행되었으면 하는 아이디어에 직접 투자하는 시간입니다.
+        모든 발표가 끝난 후, 지급된 5점, 3점, 2점의 임팩트 점수를 서로 다른 세 팀에 배분해 주세요.
+        자기 팀에는 투표할 수 없습니다.
+      </div>
+
+      <div class="score-card">
+        <div class="score-card-title">내 임팩트 점수 현황</div>
+        <div id="scoreStatus" class="score-badges"></div>
+      </div>
+
+      <div id="myVoteSummary" class="my-vote" style="display:none;">
+        <div class="my-vote-title">내 투표 현황</div>
+        <div id="myVoteList" class="my-vote-list"></div>
+      </div>
+
+      <div id="teamsContainer" class="teams-container"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
