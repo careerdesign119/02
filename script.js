@@ -1,8 +1,8 @@
-const API_URL = "https://script.google.com/macros/s/AKfycby7AULthsG13GplOkKh76lXYgq5uipHP5h7FIKQsYmsfLGteQU-Rrxep7gHeO_mFwofmw/exec";
+const API_URL = "https://script.google.com/macros/library/d/1SRFG58yBwYNeyYn2AppFzEpanYSon2ksa6vGQreQGPMadbbPXh_ktFsh/5";
 
 const FIELDS = ["ESG Impact", "Innovation", "Implementation"];
 
-let state = { teams: [], participants: [], votes: [], ranking: [] };
+let state = { teams: [], participants: [], votes: [], ranking: [], messages: [] };
 let selectedParticipantName = "";
 let selectedParticipantTeam = "";
 let adminToken = "";
@@ -63,6 +63,11 @@ function formatDateKOR(value) {
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return String(value ?? "");
   return d.toLocaleString("ko-KR");
+}
+
+function getMessage(key, fallback = "") {
+  const row = state.messages.find(m => String(m["항목명"] ?? "").trim() === key);
+  return String(row?.["문구"] ?? fallback);
 }
 
 async function apiGetInit() {
@@ -196,6 +201,7 @@ async function loadFromSheet() {
   state.participants = Array.isArray(data.participants) ? data.participants : [];
   state.votes = Array.isArray(data.votes) ? data.votes : [];
   state.ranking = Array.isArray(data.ranking) ? data.ranking : [];
+  state.messages = Array.isArray(data.messages) ? data.messages : [];
 }
 
 async function fillParticipantDropdown() {
@@ -496,6 +502,10 @@ async function initParticipantPage() {
   document.getElementById("fixedParticipantName").textContent = selectedParticipantName;
   document.getElementById("fixedParticipantTeam").textContent = selectedParticipantTeam || "-";
   document.getElementById("participantResetBtn").onclick = () => resetToEntry();
+  document.getElementById("pageNotice").textContent = getMessage(
+    "page_notice",
+    "각 참가자는 ESG Impact, Innovation, Implementation 3개 분야에서 각각 1개 팀에만 투표할 수 있습니다. 자기 팀에는 투표할 수 없으며, 분야별로 가장 우수하다고 판단되는 팀을 선택해 주세요."
+  );
 
   renderParticipantPage();
 }
@@ -611,7 +621,7 @@ function renderTeamCards() {
       </div>
 
       <div class="vote-section">
-        <div class="vote-notice">각 분야(ESG Impact / Innovation / Implementation)는 각각 1회만 투표할 수 있습니다.</div>
+        <div class="vote-notice">각 분야는 1회씩만 투표할 수 있습니다.</div>
         <div class="vote-btn-group">${voteButtonsHtml}</div>
       </div>
     `;
