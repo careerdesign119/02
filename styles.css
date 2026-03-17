@@ -30,7 +30,7 @@ h2 { margin: 0; font-size: 16px; }
   gap:10px;
 }
 
-.tabs { display: flex; gap: 8px; margin: 14px 0; }
+.tabs { display: flex; gap: 8px; margin: 14px 0; flex-wrap: wrap; }
 .tab-btn {
   border: 1px solid #e5e7eb;
   background: #f9fafb;
@@ -79,7 +79,7 @@ button:disabled {
   background: #fff;
 }
 
-.data-table { width: 100%; border-collapse: collapse; min-width: 1200px; }
+.data-table { width: 100%; border-collapse: collapse; min-width: 1100px; }
 .data-table th, .data-table td {
   border-bottom: 1px solid #f3f4f6;
   padding: 10px;
@@ -285,6 +285,12 @@ button:disabled {
   background:#f9fafb;
 }
 
+.team-title {
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
 .team-grid {
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -308,16 +314,6 @@ button:disabled {
   line-height: 1.6;
 }
 
-.invest-message {
-  margin-top:12px;
-  border:1px solid #dbeafe;
-  background:#eff6ff;
-  color:#1e3a8a;
-  border-radius:14px;
-  padding:12px;
-  font-weight:700;
-}
-
 .vote-section{ margin-top: 14px; }
 .vote-notice{ font-size:12px; color:#6b7280; margin-bottom: 8px; }
 .vote-btn-group{ display:flex; flex-wrap:wrap; gap:10px; }
@@ -326,10 +322,6 @@ button:disabled {
   background:#111827;
   color:#fff;
   border-color:#111827;
-}
-.vote-btn.secondary {
-  background:#fff;
-  color:#111827;
 }
 .vote-btn.blocked {
   background:#f3f4f6;
@@ -348,6 +340,7 @@ button:disabled {
   padding:10px 12px;
 }
 .mv-team{ font-weight:700; }
+.mv-field{ color:#6b7280; font-size:12px; }
 .mv-score{ font-weight:900; }
 
 @media (max-width: 768px) {
