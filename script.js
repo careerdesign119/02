@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycby7AULthsG13GplOkKh76lXYgq5uipHP5h7FIKQsYmsfLGteQU-Rrxep7gHeO_mFwofmw/exec";
+const API_URL = "https://script.google.com/macros/library/d/1SRFG58yBwYNeyYn2AppFzEpanYSon2ksa6vGQreQGPMadbbPXh_ktFsh/6";
 
 const FIELDS = ["ESG Impact", "Innovation", "Implementation"];
 
