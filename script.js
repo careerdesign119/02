@@ -262,7 +262,6 @@ function renderTeamsTable() {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td><input type="text" value="${escapeHtml(teamName)}" data-type="team" data-field="팀명" data-index="${index}"></td>
-      <td><input type="text" value="${escapeHtml(t["타이틀"] ?? "")}" data-type="team" data-field="타이틀" data-index="${index}"></td>
       <td><textarea data-type="team" data-field="주제" data-index="${index}">${escapeHtml(t["주제"] ?? "")}</textarea></td>
       <td><textarea data-type="team" data-field="세부설명" data-index="${index}">${escapeHtml(t["세부설명"] ?? "")}</textarea></td>
       <td><input type="text" value="${escapeHtml(t["이미지파일명"] ?? "")}" data-type="team" data-field="이미지파일명" data-index="${index}"></td>
@@ -391,7 +390,6 @@ function renderRankingTable() {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${escapeHtml(r["팀명"] ?? "")}</td>
-      <td>${escapeHtml(r["타이틀"] ?? "")}</td>
       <td>${n(r["ESG Impact"] ?? 0)}</td>
       <td>${n(r["Innovation"] ?? 0)}</td>
       <td>${n(r["Implementation"] ?? 0)}</td>
@@ -404,7 +402,6 @@ function renderRankingTable() {
 document.getElementById("addTeamBtn").addEventListener("click", () => {
   state.teams.push({
     "팀명": "",
-    "타이틀": "",
     "주제": "",
     "세부설명": "",
     "이미지파일명": ""
@@ -564,7 +561,6 @@ function renderTeamCards() {
 
   state.teams.forEach(team => {
     const teamName = String(team["팀명"] ?? "").trim();
-    const title = String(team["타이틀"] ?? "").trim();
     const topic = String(team["주제"] ?? "").trim();
     const detail = String(team["세부설명"] ?? "").trim();
     const imageUrl = String(team["이미지URL"] ?? "").trim();
@@ -606,8 +602,6 @@ function renderTeamCards() {
         <div class="team-name">${escapeHtml(teamName)}</div>
         <div class="team-total-badge">총득표 ${totalVotes}</div>
       </div>
-
-      <div class="team-title">${escapeHtml(title)}</div>
 
       <div class="team-grid">
         <div class="team-info-box">
